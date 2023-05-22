@@ -26,4 +26,7 @@ sudo usermod -a -G bird zabbix
 ```
 - restart zabbix-agent
 ```
+systemctl restart zabbix-agent
+```
+- create zabbix template and assigne to host
 ***
