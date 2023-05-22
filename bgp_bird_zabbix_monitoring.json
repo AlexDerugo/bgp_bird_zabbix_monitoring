@@ -1,0 +1,43 @@
+{
+    "zabbix_export": {
+        "version": "6.0",
+        "groups": [
+            {
+                "name": "BIRD_routers"
+            }
+        ],
+        "templates": [
+            {
+                "template": "Template_bgp_bird_monitoring",
+                "name": "Template_bgp_bird_monitoring",
+                "groups": [
+                    {
+                        "name": "BIRD_routers"
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "name": "bgp_bird_discovery",
+                        "key": "bgp.bird.discovery",
+                        "delay": "1h",
+                        "item_prototypes": [
+                            {
+                                "name": "bgp peer status - {#BGPPEER}",
+                                "key": "bgp.status[{#BGPPEER}]",
+                                "trigger_prototypes": [
+                                    {
+                                        "expression": "last(/Template_bgp_bird_monitoring/bgp.status[{#BGPPEER}])=0",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/Template_bgp_bird_monitoring/bgp.status[{#BGPPEER}])=1",
+                                        "name": "bgp peer \"{#BGPPEER}\" is down",
+                                        "priority": "AVERAGE"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
